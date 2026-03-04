@@ -1,5 +1,5 @@
 """
-NYT + TMDB Movie Review Challenge (Python Practice Version)
+APIs and General Coding Challenge (Python version)
 
 I initially worked through the challenge in Python to build an understanding of the API interactions 
 and data structures before translating the logic to Google Apps Script
@@ -26,7 +26,6 @@ try:
     response = requests.get(NYT_API_URL)
     response.raise_for_status()
     data = response.json()
-    # print(data['response'])
 except requests.exceptions.RequestException as e:
     print(f"API error: {e}")
 
@@ -39,7 +38,6 @@ filtered_reviews = []
 for movie in data['response']['docs']:
     raw_headline = movie.get('headline', {}).get('main', "N/A")
     cleaned_headline = raw_headline.lower()
-    # print(cleaned_headline)
 
     # filter by filter word
     if filter_word in cleaned_headline:
@@ -55,8 +53,6 @@ for movie in data['response']['docs']:
                 movie_title = raw_headline.split(":")[0].strip()
      
         new_movie = {
-            # "headline": movie.get('headline', {}).get('main', 'N/A'),
-            # "movie_title": movie.get('headline', {}).get('main', 'N/A').replace("‘", "").replace("’", "").strip(),
             "headline": raw_headline, 
             "movie_title": movie_title,        
             "abstract": movie.get('abstract', 'N/A'),
@@ -68,7 +64,6 @@ for movie in data['response']['docs']:
         }
         filtered_reviews.append(new_movie)
 
-# print("\n")
 
 print(f"\nFiltered reviews according to filter word: '{filter_word}': {len(filtered_reviews)} found")
 if not filtered_reviews:
@@ -82,14 +77,15 @@ else:
 #--------------Section B--------------------
 """
 MDB title matching is imperfect, movie titles differ between NYT and TMDB.
-Strategy: search using the most specific title available (from NYT keywords), then match by release year. 
-Falls back to top result if no year match.
+Strategy: 
+1. search using the most specific title available (from NYT keywords), 
+2. then match by release year. 
+3. Falls back to top result if no year match.
 https://developer.themoviedb.org/docs/search-and-query-for-details
 https://developer.themoviedb.org/reference/search-movie
 """
 TMDB_TOKEN = os.getenv("TMDB_TOKEN")
 
-# TMDB_SEARCH_URL  = f"https://api.themoviedb.org/3/search/movie?query={movie_title}"
 TMDB_SEARCH_URL  = f"https://api.themoviedb.org/3/search/movie"
 TMDB_DETAILS_URL = "https://api.themoviedb.org/3/movie"
 
@@ -98,8 +94,6 @@ tmdb_headers = {
     "Authorization": f"Bearer {TMDB_TOKEN}"
 }
 
-# response = requests.get(TMDB_SEARCH_URL, headers=tmdb_headers)
-# print(response.text)
 
 combined_results = []
 
@@ -109,8 +103,7 @@ for review in filtered_reviews:
 
     # search movie id
     try:
-        search_response = requests.get(TMDB_SEARCH_URL, headers=tmdb_headers, 
-                                       params = {"query": movie_title, "page": 1})
+        search_response = requests.get(TMDB_SEARCH_URL, headers=tmdb_headers, params = {"query": movie_title, "page": 1})
         search_response.raise_for_status()
         results = search_response.json().get('results', [])
 
@@ -124,6 +117,7 @@ for review in filtered_reviews:
             if result.get("release_date", "")[:4] == pub_year:
                 movie_id = result["id"]
                 break
+        # fallback
         if not movie_id:
             movie_id = results[0]["id"]
     except requests.exceptions.RequestException as e:
@@ -173,8 +167,8 @@ for review in filtered_reviews:
         "homepage": details.get("homepage", "N/A"),
         "tagline": details.get("tagline", "N/A")
     }
-    combined_results.append(review | tmdb_fields) # https://stackoverflow.com/questions/62498441/dict-dict-2-how-python-dictionary-alternative-operator-works
-
+    # https://stackoverflow.com/questions/62498441/dict-dict-2-how-python-dictionary-alternative-operator-works
+    combined_results.append(review | tmdb_fields) 
 
 print(f"\nCombined results: {len(combined_results)} movies")
 for movie in combined_results:
