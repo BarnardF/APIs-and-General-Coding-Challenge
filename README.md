@@ -10,6 +10,9 @@
 ## Overview
 
 This script fetches NYT movie reviews, filters them by a user-specified keyword, then enriches each result with additional movie details from TMDB - combining both datasets into a single output.
+You will need to provide your own .env file with the required api keys:
+NYT_API_KEY=your_nyt_api_key
+TMDB_TOKEN=your_tmdb_bearer_token
 
 ---
 
