@@ -56,10 +56,10 @@ for movie in data['response']['docs']:
             "headline": raw_headline, 
             "movie_title": movie_title,        
             "abstract": movie.get('abstract', 'N/A'),
-            "author": movie.get('byline', {}).get('original', 'N/A'),
+            "review_author": movie.get('byline', {}).get('original', 'N/A'),
             "article_id": movie.get('_id', 'N/a'),
             "pub_date": movie.get('pub_date', 'N/A'),
-            "source": movie.get('source', 'N/A'),
+            "review_source": movie.get('source', 'N/A'),
             "web_url": movie.get('web_url', 'N/A')
         }
         filtered_reviews.append(new_movie)
