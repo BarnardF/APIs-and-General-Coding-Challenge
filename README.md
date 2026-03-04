@@ -1,4 +1,4 @@
-# APIs and General Coding Challenge - Python Version
+# APIs and General Coding Challenge - Python Version in main.py
 
 > **Note:** The official submission for this challenge is in Google Apps Script with Google Sheets.
 > This Python version was built first as a way to understand the API interactions and data structures
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This script fetches NYT movie reviews, filters them by a user-specified keyword, then enriches each result with additional movie details from TMDB - combining both datasets into a single output. The main script is in main.py.
+This script fetches NYT movie reviews, filters them by a user-specified keyword, then enriches each result with additional movie details from TMDB - combining both datasets into a single output.
 You will need to provide your own .env file with the required api keys:
 NYT_API_KEY=your_nyt_api_key
 TMDB_TOKEN=your_tmdb_bearer_token
@@ -29,13 +29,12 @@ TMDB_TOKEN=your_tmdb_bearer_token
 - Uses the movie ID to fetch full movie details
 - Extracts 15 fields per movie:
   - `tmdb_id`, `tmdb_title`, `original_title`, `release_date`, `budget`, `revenue`, `popularity`, `vote_average`, `vote_count`, `genres`, `overview`, `origin_country`, `original_language`, `homepage`, `tagline`
-- Merges NYT review data with TMDB details into a single combined record using Python's `|` dict merge operator (Python 3.9+)
 
 ---
 
 ## Notes on TMDB Title Matching
 
-TMDB title matching is imperfect - movie titles sometimes differ between NYT and TMDB (e.g. NYT uses the full title while TMDB uses a shortened version). The strategy used here is:
+TMDB title matching was tricky - movie titles sometimes differ between NYT and TMDB (e.g. NYT uses the full title while TMDB uses a shortened version). The strategy used here is:
 
 1. Search TMDB using the movie title extracted from the NYT headline
 2. Match results by release year (extracted from `pub_date`) to find the correct entry
