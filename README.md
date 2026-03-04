@@ -1,6 +1,5 @@
 # APIs and General Coding Challenge
-## Google apps scripts version in APIs_and_General_Coding_Challenge.js 
-## Python Version in main.py 
+## Google apps scripts version in APIs_and_General_Coding_Challenge.js and Python Version in main.py 
 
 > **Note:** The official submission for this challenge is in Google Apps Script with Google Sheets.
 > This Python version was built first as a way to understand the API interactions and data structures
