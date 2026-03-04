@@ -76,7 +76,7 @@ else:
 
 #--------------Section B--------------------
 """
-MDB title matching is imperfect, movie titles differ between NYT and TMDB.
+TMDB title matching is imperfect, movie titles differ between NYT and TMDB.
 Strategy: 
 1. search using the most specific title available (from NYT keywords), 
 2. then match by release year. 
