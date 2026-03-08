@@ -26,6 +26,7 @@ try:
     response = requests.get(NYT_API_URL)
     response.raise_for_status()
     data = response.json()
+    print(data)
 except requests.exceptions.RequestException as e:
     print(f"API error: {e}")
 
